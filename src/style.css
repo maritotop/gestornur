@@ -1,0 +1,34 @@
+/* Alineación del botón "Cerrar sesión" */
+.navbar-nav {
+    display: flex;
+    align-items: center; /* Asegura que los elementos estén alineados correctamente */
+    margin-left: auto; /* Empuja los elementos hacia la derecha */
+  }
+  
+  /* Estilo para las opciones del menú desplegable al pasar el mouse */
+  .custom-dropdown-menu .custom-dropdown-item:hover {
+    background-color: #FFC72C; /* Fondo amarillo al pasar el mouse */
+    color: #002855; /* Texto azul para contraste */
+  }
+
+/* Estilo personalizado para el botón de búsqueda */
+.btn-custom-search {
+  background-color: #28a745; /* Verde */
+  color: white;
+  border: none;
+}
+
+.btn-custom-search:hover {
+  background-color: #218838; /* Un tono más oscuro */
+}
+
+/* Estilo personalizado para el botón de ver documentos */
+.btn-custom-view {
+  background-color: #17a2b8; /* Azul */
+  color: white;
+  border: none;
+}
+
+.btn-custom-view:hover {
+  background-color: #117a8b; /* Un tono más oscuro */
+}
