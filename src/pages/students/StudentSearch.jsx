@@ -13,6 +13,7 @@ const StudentSearch = () => {
   const [student, setStudent] = useState(null); // Datos del estudiante encontrado
   const [error, setError] = useState(""); // Mensaje de error
   const [loading, setLoading] = useState(false); // Estado de carga
+  const [userRole, setUserRole] = useState(localStorage.getItem("rol")); // Obtener el rol del usuario desde el localStorage
 
   // Función para manejar el cambio en el campo de número de registro
   const handleInputChange = (e) => {
@@ -53,6 +54,11 @@ const StudentSearch = () => {
   const verDocumentos = (id) => () => {
     console.log("Ver documentos del estudiante con ID", id);
     navigate(DOCUMENT_STUDENT_URL + id);
+  };
+
+  // Función para editar el estudiante
+  const editarEstudiante = (id) => {
+    navigate(`/students/edit/${id}`); // Redirigir a la página de edición
   };
 
   return (
@@ -108,6 +114,8 @@ const StudentSearch = () => {
                     <th>Nº DE REGISTRO</th>
                     <th>NOMBRE COMPLETO</th>
                     <th>VER</th>
+                    {/* Mostrar el botón "Editar" solo si el usuario es admin o superadmin */}
+                    {(userRole === "admin" || userRole === "superadmin") && <th>EDITAR</th>}
                   </tr>
                 </thead>
                 <tbody className="text-center">
@@ -130,6 +138,25 @@ const StudentSearch = () => {
                         Ver documentos
                       </Button>
                     </td>
+                    {/* Si el usuario es admin o superadmin, mostrar el botón de editar */}
+                    {(userRole === "admin" || userRole === "superadmin") && (
+                      <td>
+                        <Button
+                          className="btn-custom-edit btn-sm"
+                          onClick={() => editarEstudiante(student.id)}
+                          style={{
+                            backgroundColor: "#f39c12",
+                            borderColor: "#f39c12",
+                            color: "white",
+                            fontWeight: "bold",
+                            borderRadius: "8px",
+                            padding: "6px 10px"
+                          }}
+                        >
+                          Editar
+                        </Button>
+                      </td>
+                    )}
                   </tr>
                 </tbody>
               </Table>

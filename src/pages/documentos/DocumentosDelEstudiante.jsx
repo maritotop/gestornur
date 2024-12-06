@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Card, Container, Table, Button, Modal } from "react-bootstrap";
-import { getDocumentosByStudent, deleteDocumento } from "../../services/DocumentosService";
+import { getDocumentosByStudent, deleteDocumento,patchUpdateDocumento } from "../../services/DocumentosService";
 import { getAuthToken, getUserRole } from "../../utilities/TokenUtilities";
 import Menu from "../../components/Menu";
 import { useParams } from "react-router-dom";
@@ -79,6 +79,26 @@ const DocumentosDelEstudiante = () => {
     setSelectedDocument(null);
   };
 
+  const handleToggleArchive = (id, currentState) => {
+    // Determinar el nuevo estado
+    const newState = currentState === "archivado" ? "activo" : "archivado";
+  
+    if (window.confirm(`¿Estás seguro de ${newState === "archivado" ? "archivar" : "desarchivar"} este documento?`)) {
+      const document = { estado: newState };
+  
+      patchUpdateDocumento(getAuthToken(), id, document)
+        .then(() => {
+          alert(`Documento ${newState === "archivado" ? "archivado" : "activado"} con éxito`);
+          fetchDocuments(); // Recargar la lista actualizada
+        })
+        .catch((err) => {
+          console.error(err);
+          alert(`Hubo un error al ${newState === "archivado" ? "archivar" : "desarchivar"} el documento`);
+        });
+    }
+  };
+  
+
   return (
     <>
       <Menu />
@@ -89,7 +109,7 @@ const DocumentosDelEstudiante = () => {
               DOCUMENTOS REGISTRADOS
             </Card.Title>
 
-            {userRole !== "user" && (
+            {
               <div className="d-flex justify-content-end mb-3">
                 <Link to={`/documents/create/${id}`}>
                   <Button
@@ -105,7 +125,7 @@ const DocumentosDelEstudiante = () => {
                   </Button>
                 </Link>
               </div>
-            )}
+            }
 
             <Table striped bordered hover responsive>
               <thead className="text-center">
@@ -115,6 +135,7 @@ const DocumentosDelEstudiante = () => {
                   <th>FECHA DE CREACION</th>
                   <th>VER</th>
                   <th>ELIMINAR</th>
+                  <th>ARCHIVAR</th>
                 </tr>
               </thead>
               <tbody className="text-center">
@@ -183,7 +204,7 @@ const DocumentosDelEstudiante = () => {
                           )}
                         </td>
                         <td>
-                          {showDeleteButton ? (
+                          {userRole !== "admin" && showDeleteButton ? (
                             <Button
                               variant="danger"
                               onClick={() => handleDelete(doc.id)}
@@ -200,6 +221,24 @@ const DocumentosDelEstudiante = () => {
                             <span className="text-muted">No disponible</span>
                           )}
                         </td>
+                        <td>
+                        {(userRole === "admin" || userRole === "superadmin") && (
+                          <Button
+                            variant={doc.estado === "archivado" ? "primary" : "warning"}
+                            onClick={() => handleToggleArchive(doc.id, doc.estado)}
+                            style={{
+                              borderRadius: "8px",
+                              padding: "8px 12px",
+                              fontSize: "0.9rem",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            {doc.estado === "archivado" ? "Desarchivar" : "Archivar"}
+                          </Button>
+                        )}
+                        {userRole === "user" && <span className="text-muted">No disponible</span>}
+                      </td>
+
                       </tr>
                     );
                   })

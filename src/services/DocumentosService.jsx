@@ -82,9 +82,11 @@ export const getDocumentoById = (token, id) => {
 // Actualizar un documento
 export const patchUpdateDocumento = (token, id, documento) => {
     return new Promise((resolve, reject) => {
-        axios.patch(`${BASE_URL}/api/documents/${id}/`, documento, {
+        axios.patch(`${BASE_URL}/api/documents/${id}`, documento, {
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+
             },
         })
             .then((response) => {

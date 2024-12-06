@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Card, Container, Table, Button } from "react-bootstrap";
+import { Card, Container, Table, Button, Pagination } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import { getAuthToken } from "../../utilities/TokenUtilities";
 import { useNavigate } from "react-router-dom";
-import { getListaEstudiantes } from "../../services/EstudiantesService"; // Eliminé la función deleteEstudiante
+import { getListaEstudiantes } from "../../services/EstudiantesService";
 import Menu from "../../components/Menu";
 import { DOCUMENT_STUDENT_URL } from "../../navigation/CONSTANTS";
 
@@ -11,7 +11,9 @@ const StudentListPage = () => {
   const navigate = useNavigate();
   const [listaStudents, setListaStudents] = useState([]);
   const [showAlertError, setShowAlertError] = useState(false);
-  const [userRole, setUserRole] = useState(localStorage.getItem("rol")); // Obtener el rol del usuario desde el localStorage
+  const [userRole, setUserRole] = useState(localStorage.getItem("rol"));
+  const [currentPage, setCurrentPage] = useState(1);
+  const [studentsPerPage] = useState(15);  // Puedes ajustar este valor según lo necesario
   const { id } = useParams();
 
   useEffect(() => {
@@ -30,11 +32,22 @@ const StudentListPage = () => {
     navigate(DOCUMENT_STUDENT_URL + id);
   };
 
-  // Función de redirección para el botón de "Editar"
   const editarEstudiante = (id) => {
-    // Redirige a la página de edición (deberías crear esta ruta más adelante)
     navigate(`/students/edit/${id}`);
   };
+
+  // Lógica para la paginación
+  const indexOfLastStudent = currentPage * studentsPerPage;
+  const indexOfFirstStudent = indexOfLastStudent - studentsPerPage;
+  const currentStudents = listaStudents.slice(indexOfFirstStudent, indexOfLastStudent);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  // Número total de páginas
+  const pageNumbers = [];
+  for (let i = 1; i <= Math.ceil(listaStudents.length / studentsPerPage); i++) {
+    pageNumbers.push(i);
+  }
 
   return (
     <>
@@ -74,7 +87,6 @@ const StudentListPage = () => {
                     <th style={{ textAlign: "center", fontWeight: "bold", fontSize: "1rem", color: "black" }}>
                       VER DOCUMENTOS
                     </th>
-                    {/* Mostrar la columna "Editar" solo si el usuario es admin o superadmin */}
                     {(userRole === "admin" || userRole === "superadmin") && (
                       <th style={{ textAlign: "center", fontWeight: "bold", fontSize: "1rem", color: "black" }}>
                         EDITAR
@@ -83,7 +95,7 @@ const StudentListPage = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {listaStudents.map((student) => (
+                  {currentStudents.map((student) => (
                     <tr key={student.id}>
                       <td style={{ textAlign: "center", padding: "0.75rem" }}>{student.nroRegistro}</td>
                       <td style={{ textAlign: "center", padding: "0.75rem" }}>{student.nombreCompleto}</td>
@@ -113,7 +125,7 @@ const StudentListPage = () => {
                               fontSize: "0.8rem",
                               borderRadius: "5px",
                             }}
-                            onClick={() => editarEstudiante(student.id)} // Redirige a la página de edición
+                            onClick={() => editarEstudiante(student.id)}
                           >
                             Editar
                           </Button>
@@ -123,6 +135,26 @@ const StudentListPage = () => {
                   ))}
                 </tbody>
               </Table>
+            </div>
+            {/* Paginación */}
+            <div style={{ display: "flex", justifyContent: "center", marginTop: "1rem" }}>
+              <Pagination>
+                <Pagination.Prev onClick={() => setCurrentPage(currentPage > 1 ? currentPage - 1 : currentPage)} />
+                {pageNumbers.map((number) => (
+                  <Pagination.Item
+                    key={number}
+                    active={number === currentPage}
+                    onClick={() => paginate(number)}
+                  >
+                    {number}
+                  </Pagination.Item>
+                ))}
+                <Pagination.Next
+                  onClick={() =>
+                    setCurrentPage(currentPage < pageNumbers.length ? currentPage + 1 : currentPage)
+                  }
+                />
+              </Pagination>
             </div>
           </Card.Body>
         </Card>

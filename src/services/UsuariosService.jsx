@@ -75,3 +75,23 @@ export const updateUsuario = (token, id, userData) => {
         });
     });
 };
+
+// Eliminar usuario por ID
+export const deleteUsuario = (token, id) => {
+    return new Promise((resolve, reject) => {
+        axios.delete(`${BASE_URL}/api/users/${id}`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        })
+        .then((response) => {
+            console.log(response);
+            resolve(response.data); // Resuelve con los datos de la respuesta
+        })
+        .catch((error) => {
+            console.log(error);
+            reject(error); // Si hay un error, lo rechaza
+        });
+    });
+};

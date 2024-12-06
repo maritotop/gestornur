@@ -1,8 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import HomePage from "../pages/HomePage";
 import AboutPage from "../pages/AboutPage";
-import { ABOUT_URL, HOME_URL, PERSONAS_LIST_URL, LOGIN_URL, PERSONA_CREATE_URL, REUNION_LIST_URL, REUNION_CREATE_URL, USUARIO_REUNION_LIST_URL, 
-USUARIO_REUNION_CREATE_URL, USUARIO_REUNION_LIST2_URL, CONDOMINIO_EDIT_URL, MANZANA_LIST_URL, BLOQUE_LIST_URL, MANZANA_CREATE_URL, BLOQUE_CREATE_URL, LOTE_LIST_URL, PISO_LIST_URL, PISO_CREATE_URL, LOTE_CREATE_URL, DPTO_CREATE_URL, DPTO_LIST_URL,
+import { ABOUT_URL, HOME_URL, PERSONAS_LIST_URL, LOGIN_URL, PERSONA_CREATE_URL,
 STUDENT_LIST_URL, 
 STUDENT_SEARCH_URL,
 DOCUMENT_LIST_URL,
@@ -13,6 +12,7 @@ AUDITORIA_LIST_URL,
 USUARIO_CREATE_URL,
 USUARIO_LIST_URL,
 USUARIO_EDIT_URL,
+STUDENT_EDIT_URL
 } from "./CONSTANTS";
 import PersonaListPage from "../pages/personas/PersonaListPage";
 import LoginPage from "../pages/auth/LoginPage";
@@ -27,6 +27,7 @@ import AuditoriaListPage from "../pages/auditoria/AuditoriaListPage";
 import UsuarioFormPage from "../pages/usuarios/UsuarioFormPage";
 import UsuarioListPage from "../pages/usuarios/UsuarioListPage";
 import UsuarioEditFormPage from "../pages/usuarios/UsuarioEditFormPage";
+import StudentFormEditPage from "../pages/students/StudentFormEditPage";
 
 
 export const router = createBrowserRouter([
@@ -89,6 +90,10 @@ export const router = createBrowserRouter([
     {
         path: USUARIO_EDIT_URL+":id",
         element: <UsuarioEditFormPage/>,
+    },
+    {
+        path: STUDENT_EDIT_URL+":id",
+        element: <StudentFormEditPage/>,
     },
     
 ]);
