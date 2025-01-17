@@ -85,6 +85,7 @@ const UsuarioListPage = () => {
                     <th style={{ textAlign: "center", fontWeight: "bold", fontSize: "1rem", color: "black" }}>ID</th>
                     <th style={{ textAlign: "center", fontWeight: "bold", fontSize: "1rem", color: "black" }}>NOMBRE</th>
                     <th style={{ textAlign: "center", fontWeight: "bold", fontSize: "1rem", color: "black" }}>EMAIL</th>
+                    <th style={{ textAlign: "center", fontWeight: "bold", fontSize: "1rem", color: "black" }}>ROL</th> {/* Nueva columna para el rol */}
                     <th style={{ textAlign: "center", fontWeight: "bold", fontSize: "1rem", color: "black" }}>EDITAR</th>
                     <th style={{ textAlign: "center", fontWeight: "bold", fontSize: "1rem", color: "black" }}>ELIMINAR</th>
                   </tr>
@@ -95,6 +96,7 @@ const UsuarioListPage = () => {
                       <td style={{ textAlign: "center", padding: "0.75rem" }}>{usuario.id}</td>
                       <td style={{ textAlign: "center", padding: "0.75rem" }}>{usuario.name}</td>
                       <td style={{ textAlign: "center", padding: "0.75rem" }}>{usuario.email}</td>
+                      <td style={{ textAlign: "center", padding: "0.75rem" }}>{usuario.rol}</td> {/* Mostrar rol */}
                       <td style={{ textAlign: "center", padding: "0.75rem" }}>
                         <Button
                           style={{

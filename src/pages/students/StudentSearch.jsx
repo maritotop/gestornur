@@ -17,9 +17,13 @@ const StudentSearch = () => {
 
   // Función para manejar el cambio en el campo de número de registro
   const handleInputChange = (e) => {
-    const value = e.target.value.replace(/[^a-zA-Z0-9]/g, "");
-    setNroRegistro(value);
+    const value = e.target.value.toUpperCase(); // Convertir a mayúsculas
+    const regex = /^[A-Z0-9]*$/; // Permitir solo letras mayúsculas y números
+    if (regex.test(value)) {
+      setNroRegistro(value); // Actualizar el estado solo si cumple con el regex
+    }
   };
+  
 
   const buscarEstudiante = () => {
     if (!nroRegistro) {
@@ -69,7 +73,7 @@ const StudentSearch = () => {
           <Card.Body>
             <Card.Title className="text-center mb-4" style={{ color: "#333" }}>BUSCAR ESTUDIANTE</Card.Title>
             <Form>
-              <Form.Group className="mb-4">
+            <Form.Group className="mb-4">
                 <Form.Label className="d-block text-center">Número de Registro</Form.Label>
                 <div className="d-flex justify-content-center">
                   <Form.Control
@@ -104,9 +108,7 @@ const StudentSearch = () => {
                 </div>
               </Form.Group>
             </Form>
-
             {error && <Alert variant="danger" className="mt-3">{error}</Alert>}
-
             {student && (
               <Table striped bordered hover responsive className="mt-4">
                 <thead style={{ backgroundColor: "#22b3a4", color: "white" }} className="text-center">

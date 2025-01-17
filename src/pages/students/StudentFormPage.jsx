@@ -62,24 +62,42 @@ const StudentFormPage = () => {
                                 <FormGroup className="mb-3">
                                     <Form.Label>Número de Registro</Form.Label>
                                     <FormControl 
-                                        value={nroRegistro} 
-                                        required 
-                                        onChange={(e) => setNroRegistro(e.target.value)} 
+                                        value={nroRegistro}
+                                        required
+                                        onChange={(e) => {
+                                            const value = e.target.value.toUpperCase(); // Convertir a mayúsculas
+                                            const regex = /^[A-Z0-9]*$/; // Solo permite letras mayúsculas y números
+                                            if (regex.test(value)) {
+                                                setNroRegistro(value); // Solo actualizar si cumple con el regex
+                                            }
+                                        }}
                                         placeholder="Ej. 12345"
                                     />
+                                    <Form.Control.Feedback type="invalid">
+                                        Necesitas un número de registro válido (solo números y letras en mayúsculas)
+                                    </Form.Control.Feedback>
+
                                     <Form.Control.Feedback type="invalid">
                                         Necesitas un número de registro válido
                                     </Form.Control.Feedback>
                                 </FormGroup>
-
                                 <FormGroup className="mb-3">
                                     <Form.Label>Nombre Completo</Form.Label>
                                     <FormControl 
                                         value={nombreCompleto} 
                                         required 
-                                        onChange={(e) => setNombreCompleto(e.target.value)} 
-                                        placeholder="Ej. Juan Pérez"
+                                        onChange={(e) => {
+                                            const value = e.target.value.toUpperCase(); // Convertir a mayúsculas
+                                            const regex = /^[A-Z\s]*$/; // Solo permite letras mayúsculas y espacios
+                                            if (regex.test(value)) {
+                                                setNombreCompleto(value); // Solo actualizar si cumple con el regex
+                                            }
+                                        }} 
+                                        placeholder="Ej. JUAN PÉREZ"
                                     />
+                                    <Form.Control.Feedback type="invalid">
+                                        Necesitas un nombre completo válido (solo letras en mayúsculas)
+                                    </Form.Control.Feedback>
                                     <Form.Control.Feedback type="invalid">
                                         Necesitas un nombre completo
                                     </Form.Control.Feedback>
